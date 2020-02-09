@@ -1,4 +1,4 @@
-package com.xingzhi.apartment;
+package com.xingzhi.apartment.JDBC;
 
 import com.xingzhi.apartment.JDBC.ApartmentDao;
 import com.xingzhi.apartment.model.Apartment;
@@ -35,7 +35,7 @@ public class ApartmentDaoTest {
         a.setName("ABC Apartment");
         a.setSmallestSize("studio");
         a.setPhoto("No Photo Available");
-        a.setPropertyInfoId(1);
+
         apartmentDao.addApartment(a);
     }
 
@@ -68,7 +68,7 @@ public class ApartmentDaoTest {
         b.setPhoto("no");
         b.setName("DDD");
         b.setLowestPrice("$10000");
-        b.setPropertyInfoId(2);
+
         apartmentDao.addApartment(b);
         apartments = apartmentDao.getApartment();
         int b=apartments.size();

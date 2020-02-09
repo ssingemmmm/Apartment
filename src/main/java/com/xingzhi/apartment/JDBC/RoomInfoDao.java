@@ -41,7 +41,7 @@ public class RoomInfoDao {
 
                 RoomInfo roomInfo = new RoomInfo();
                 roomInfo.setId(id);
-                roomInfo.setApartmentId(apartmentId);
+
                 roomInfo.setSize(size);
                 roomInfo.setPriceRange(priceRange);
                 roomInfo.setLayoutPhoto(layoutPhoto);
@@ -75,13 +75,13 @@ public class RoomInfoDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //step 3:execute a query
-            String sql = "insert into roominfo (id,apartment_id,size,price_range,layout_photo) values(?,?,?,?,?)";
+            String sql = "insert into roominfo (id,size,price_range,layout_photo) values(?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, roomInfo.getId());
-            stmt.setInt(2, roomInfo.getApartmentid());
-            stmt.setString(3, roomInfo.getSize());
-            stmt.setString(4, roomInfo.getPriceRange());
-            stmt.setString(5, roomInfo.getLayoutPhoto());
+
+            stmt.setString(2, roomInfo.getSize());
+            stmt.setString(3, roomInfo.getPriceRange());
+            stmt.setString(4, roomInfo.getLayoutPhoto());
             stmt.execute();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -139,14 +139,14 @@ public class RoomInfoDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //step 3:execute a query
-            String sql = "update roominfo set apartment_id=?,size=?,price_range=?,layout_photo=? where id=?";
+            String sql = "update roominfo set size=?,price_range=?,layout_photo=? where id=?";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, roomInfo.getApartmentid());
-            stmt.setString(2, roomInfo.getSize());
-            stmt.setString(3, roomInfo.getPriceRange());
-            stmt.setString(4, roomInfo.getLayoutPhoto());
-            stmt.setInt(5, roomInfo.getId());
+
+            stmt.setString(1, roomInfo.getSize());
+            stmt.setString(2, roomInfo.getPriceRange());
+            stmt.setString(3, roomInfo.getLayoutPhoto());
+            stmt.setInt(4, roomInfo.getId());
             stmt.execute();
         } catch (Exception e) {
             logger.error(e.getMessage());

@@ -1,4 +1,4 @@
-package com.xingzhi.apartment;
+package com.xingzhi.apartment.JDBC;
 
 import com.xingzhi.apartment.JDBC.ApartmentDao;
 import com.xingzhi.apartment.JDBC.RoomInfoDao;
@@ -39,12 +39,12 @@ public class RoomInfoDaoTest {
         c.setName("ABC Apartment");
         c.setSmallestSize("studio");
         c.setPhoto("No Photo Available");
-        c.setPropertyInfoId(1);
+
         apartmentDao.addApartment(c);
         roomInfoDao = new RoomInfoDao();
         a = new RoomInfo();
         a.setId(99999);
-        a.setApartmentId(9998);
+
         a.setSize("1b1b");
         a.setPriceRange("1000-1500");
         a.setLayoutPhoto("photo");
@@ -77,7 +77,7 @@ public class RoomInfoDaoTest {
         int a=roomInfos.size();
         b = new RoomInfo();
         b.setId(9999);
-        b.setApartmentId(9998);
+
         b.setSize("1b2b");
         b.setPriceRange("1000-1509");
         b.setLayoutPhoto("photo1");

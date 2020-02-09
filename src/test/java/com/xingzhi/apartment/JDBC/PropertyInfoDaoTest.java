@@ -1,4 +1,4 @@
-package com.xingzhi.apartment;
+package com.xingzhi.apartment.JDBC;
 
 import com.xingzhi.apartment.JDBC.ApartmentDao;
 import com.xingzhi.apartment.JDBC.PropertyInfoDao;
@@ -39,12 +39,12 @@ public class PropertyInfoDaoTest {
         c.setName("ABC Apartment");
         c.setSmallestSize("studio");
         c.setPhoto("No Photo Available");
-        c.setPropertyInfoId(1);
+
         apartmentDao.addApartment(c);
         propertyInfoDao = new PropertyInfoDao();
         a = new PropertyInfo();
 
-        a.setApartmentId(9998);
+
 
         a.setEmail("abc@abc.com");
 
@@ -82,7 +82,7 @@ public class PropertyInfoDaoTest {
         int a=propertyInfos.size();
         b = new PropertyInfo();
         b.setId(9999);
-        b.setApartmentId(9998);
+
         b.setEmail("abb@abc.com");
         b.setOfficeHours("closed");
         b.setPhoneNumber("123123124");
@@ -103,7 +103,7 @@ public class PropertyInfoDaoTest {
         b = new PropertyInfo();
         b.setId(9999);
 
-        b.setApartmentId(9998);
+
 
         b.setEmail("abb@abc.com");
 

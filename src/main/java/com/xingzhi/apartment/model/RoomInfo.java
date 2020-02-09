@@ -1,19 +1,35 @@
 package com.xingzhi.apartment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Entity
+@Table(name = "roominfo")
 public class RoomInfo {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    private int apartmentId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id")
+    private Apartment apartment;
+
+    @Column(name = "size")
     private String size;
+
+    @Column(name = "price_range")
     private String priceRange;
+
+    @Column(name = "layout_photo")
     private String layoutPhoto;
+
 
     public int getId(){ return id; }
 
     public void setId(int id){ this.id=id; }
-
-    public int getApartmentid(){ return apartmentId; }
-
-    public void setApartmentId(int apartmentId){ this.apartmentId=apartmentId; }
 
     public String getSize(){
         return size;
@@ -38,4 +54,8 @@ public class RoomInfo {
     public void setLayoutPhoto(String layoutPhoto){
         this.layoutPhoto=layoutPhoto;
     }
+
+    public Apartment getApartment(){ return apartment; }
+
+    public void setApartment(Apartment apartment){ this.apartment = apartment; }
 }

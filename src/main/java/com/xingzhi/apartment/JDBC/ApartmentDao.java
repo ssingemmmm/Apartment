@@ -38,7 +38,7 @@ public class ApartmentDao {
                 String smallestSize = rs.getString("smallest_size");
                 String photo = rs.getString("photo");
                 Apartment apartment = new Apartment();
-                apartment.setPropertyInfoId(propertyInfoId);
+
                 apartment.setId(id);
                 apartment.setLowestPrice(lowestPrice);
                 apartment.setName(name);
@@ -72,14 +72,14 @@ public class ApartmentDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //step 3:execute a query
-            String sql = "insert into apartment (id,name,lowest_price,smallest_size,photo,property_info_id) values(?,?,?,?,?,?)";
+            String sql = "insert into apartment (id,name,lowest_price,smallest_size,photo) values(?,?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, apartment.getId());
             stmt.setString(2, apartment.getName());
             stmt.setString(3, apartment.getLowestPrice());
             stmt.setString(4, apartment.getSmallestSize());
             stmt.setString(5, apartment.getPhoto());
-            stmt.setInt(6, apartment.getPropertyInfoId());
+
             stmt.execute();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -135,14 +135,14 @@ public class ApartmentDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //step 3:execute a query
-            String sql = "update apartment set name=?,lowest_price=?,smallest_size=?,photo=?, property_info_id=? where id=?";
+            String sql = "update apartment set name=?,lowest_price=?,smallest_size=?,photo=? where id=?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, apartment.getName());
             stmt.setString(2, apartment.getLowestPrice());
             stmt.setString(3, apartment.getSmallestSize());
             stmt.setString(4, apartment.getPhoto());
-            stmt.setInt(5, apartment.getPropertyInfoId());
-            stmt.setInt(6, apartment.getId());
+
+            stmt.setInt(5, apartment.getId());
             stmt.execute();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -187,7 +187,7 @@ public class ApartmentDao {
                 apartment.setName(name);
                 apartment.setSmallestSize(smallestSize);
                 apartment.setPhoto(photo);
-                apartment.setPropertyInfoId(propertyInfoId);
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

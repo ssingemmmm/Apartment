@@ -1,21 +1,34 @@
 package com.xingzhi.apartment.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "propertyinfo")
 public class PropertyInfo {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    private int apartmentId;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "office_hours")
     private String officeHours;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
     public int getId(){ return id; }
 
     public void setId(int id){ this.id=id; }
-
-    public int getApartmentid(){ return apartmentId; }
-
-    public void setApartmentId(int apartmentId){ this.apartmentId=apartmentId; }
 
     public String getPhoneNumber(){ return phoneNumber; }
 
@@ -23,7 +36,7 @@ public class PropertyInfo {
 
     public String getAddress(){ return address; }
 
-    public void setAddress(String streetAddress){ this.address=address; }
+    public void setAddress(String address){ this.address=address; }
 
     public String getEmail(){
         return email;
@@ -40,5 +53,9 @@ public class PropertyInfo {
     public void setOfficeHours(String officeHours){
         this.officeHours=officeHours;
     }
+
+    public Apartment getApartment(){ return apartment; }
+
+    public void setApartment(Apartment apartment){ this.apartment = apartment; }
 
 }
