@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
@@ -23,7 +24,7 @@ import org.springframework.context.annotation.Scope;
 /* Define VM options
     -Ddatabase.driver=org.postgresql.Driver
     -Ddatabase.dialect=org.hibernate.dialect.PostgreSQL9Dialect
-    -Ddatabase.url=jdbc:postgresql://localhost:5432/training_db
+    -Ddatabase.url=jdbc:postgresql://localhost:5432/apartment_db
     -Ddatabase.user=admin
     -Ddatabase.password=Training123!
     -Dlogging.level.org.springframework=INFO
@@ -36,6 +37,9 @@ import org.springframework.context.annotation.Scope;
                        DataSourceAutoConfiguration.class,
                        DataSourceTransactionManagerAutoConfiguration.class,
                        HibernateJpaAutoConfiguration.class})
+@ServletComponentScan(basePackages = {"com.xingzhi.apartment.servlet",
+                                      "com.xingzhi.apartment.filter",
+                                      "com.xingzhi.apartment.listener"})
 public class AppInitializer {
     public static void main(String[] args) throws NullPointerException{
         if (HibernateUtil.getSessionFactory() == null) {
