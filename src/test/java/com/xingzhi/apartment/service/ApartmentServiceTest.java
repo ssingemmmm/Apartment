@@ -72,7 +72,7 @@ public class ApartmentServiceTest {
     @Test
     public void getApartmentByNameWithRoomInfo(){
         String name = "A";
-        List<Object[]> results = apartmentService.getApartmentByNameWithAllRoomInfo(name);
+        List<Apartment> results = apartmentService.getApartmentByNameWithAllRoomInfo(name);
         Assert.assertEquals(1,results.size());
     }
 

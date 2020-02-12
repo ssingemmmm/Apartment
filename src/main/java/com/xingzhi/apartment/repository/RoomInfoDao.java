@@ -6,7 +6,7 @@ import com.xingzhi.apartment.model.RoomInfo;
 import java.util.List;
 
 public interface RoomInfoDao {
-    void save(RoomInfo roomInfo);
+    boolean save(RoomInfo roomInfo);
     int updateRoomInfoPrice(int id, String priceRange);
     List<RoomInfo> getRoomInfos();
     List<RoomInfo> getRoomInfoByApartmentName(String name);

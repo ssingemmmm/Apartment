@@ -1,13 +1,23 @@
 package com.xingzhi.apartment.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings({"JpaDataSourceORMInspection", "JpaAttributeTypeInspection", "JpaModelReferenceInspection"})
 @Entity
 @Table(name = "apartment")
 public class Apartment {
+
+    public Apartment(int id, String name, String lowestPrice, String smallestSize, String photo) {
+        this.id = id;
+        this.name = name;
+        this.lowestPrice = lowestPrice;
+        this.smallestSize = smallestSize;
+        this.photo = photo;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -25,10 +35,15 @@ public class Apartment {
     private String photo;
 
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<RoomInfo> roomInfos;
 
     @OneToOne(mappedBy = "apartment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JsonIgnore
     private PropertyInfo propertyInfo;
+
+    public Apartment() {}
+
 
     public int getId() { return id; }
 
@@ -54,10 +69,19 @@ public class Apartment {
     }
 
     public Set<RoomInfo> getRoomInfos() {
+        try {
+            int size = roomInfos.size();
+        }
+        catch (Exception e) {
+            return null;
+        }
         return roomInfos;
     }
 
     public void setRoomInfos(Set<RoomInfo> roomInfos) {
+        for (RoomInfo r : roomInfos) {
+            if (r.getApartment() == null) r.setApartment(this);
+        }
         this.roomInfos = roomInfos;
     }
 

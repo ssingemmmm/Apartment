@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ApartmentDaoImpl implements ApartmentDao{
@@ -22,14 +23,15 @@ public class ApartmentDaoImpl implements ApartmentDao{
         this.logger = logger;
         this.sessionFactory = sessionFactory;
     }
-    public void save(Apartment apartment) {
+    public boolean save(Apartment apartment) {
         Transaction transaction = null;
-
+        boolean isSuccessful = false;
         try  {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
             session.save(apartment);
             transaction.commit();
+            isSuccessful = true;
         }
         catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -37,6 +39,7 @@ public class ApartmentDaoImpl implements ApartmentDao{
         }
 
         logger.debug(String.format("The apartment %s was inserted into the table.", apartment.toString()));
+        return isSuccessful;
     }
 
     public int updateApartmentLowestPrice(String name, String lowestPrice) {
@@ -122,23 +125,15 @@ public class ApartmentDaoImpl implements ApartmentDao{
     }
 
     @Override
-    public List<Object[]> getApartmentByNameWithAllRoomInfo(String name) {
+    public List<Apartment> getApartmentByNameWithAllRoomInfo(String name) {
         if (name == null) return null;
 
-        String hql = "FROM Apartment as apt left join apt.roomInfos where apt.name = :name";
+        String hql = "FROM Apartment as apt left join fetch apt.roomInfos where apt.name = :name";
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query query = session.createQuery(hql);
+            Query<Apartment> query = session.createQuery(hql);
             query.setParameter("name", name);
-
-            List<Object[]> resultList = query.list();
-
-            for (Object[] obj : resultList) {
-                logger.debug(((Apartment)obj[0]).toString());
-                logger.debug(((RoomInfo)obj[1]).toString());
-            }
-
-            return resultList;
+            return query.list().stream().distinct().collect(Collectors.toList());
         }
     }
 }

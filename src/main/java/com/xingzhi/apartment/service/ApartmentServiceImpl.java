@@ -20,8 +20,8 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
-    public void save(Apartment apartment) {
-        apartmentDao.save(apartment);
+    public boolean save(Apartment apartment) {
+        return apartmentDao.save(apartment);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
-    public List<Object[]> getApartmentByNameWithAllRoomInfo(String name) {
+    public List<Apartment> getApartmentByNameWithAllRoomInfo(String name) {
         return apartmentDao.getApartmentByNameWithAllRoomInfo(name);
     }
 }

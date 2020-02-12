@@ -75,7 +75,7 @@ public class ApartmentDaoTest {
     @Test
     public void getApartmentByNameWithRoomInfo(){
         String name = "A";
-        List<Object[]> results = apartmentDao.getApartmentByNameWithAllRoomInfo(name);
+        List<Apartment> results = apartmentDao.getApartmentByNameWithAllRoomInfo(name);
         Assert.assertEquals(1,results.size());
     }
 

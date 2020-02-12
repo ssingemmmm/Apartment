@@ -19,8 +19,8 @@ public class PropertyInfoServiceImpl implements PropertyInfoService {
         this.propertyInfoDao = propertyInfoDao;
     }
     @Override
-    public void save(PropertyInfo propertyInfo) {
-        propertyInfoDao.save(propertyInfo);
+    public boolean save(PropertyInfo propertyInfo) {
+        return propertyInfoDao.save(propertyInfo);
     }
 
     @Override

@@ -19,8 +19,8 @@ public class RoomInfoServiceImpl implements RoomInfoService{
     }
 
     @Override
-    public void save(RoomInfo roomInfo) {
-        roomInfoDao.save(roomInfo);
+    public boolean save(RoomInfo roomInfo) {
+        return roomInfoDao.save(roomInfo);
     }
 
     @Override

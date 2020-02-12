@@ -5,7 +5,7 @@ import com.xingzhi.apartment.model.PropertyInfo;
 import java.util.List;
 
 public interface PropertyInfoService {
-    void save(PropertyInfo propertyInfo);
+    boolean save(PropertyInfo propertyInfo);
     int updatePropertyInfo(int id, PropertyInfo propertyInfo);
     List<PropertyInfo> getPropertyInfos();
     PropertyInfo getPropertyInfoById(int id);

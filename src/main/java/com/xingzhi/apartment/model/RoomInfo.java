@@ -8,6 +8,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roominfo")
 public class RoomInfo {
+
+    public RoomInfo(int id, String size, String priceRange, String layoutPhoto){
+        this.id = id;
+        this.size = size;
+        this.priceRange = priceRange;
+        this.layoutPhoto = layoutPhoto;
+    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -26,6 +33,7 @@ public class RoomInfo {
     @Column(name = "layout_photo")
     private String layoutPhoto;
 
+    public RoomInfo(){}
 
     public int getId(){ return id; }
 

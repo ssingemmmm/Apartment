@@ -23,14 +23,15 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
         this.sessionFactory = sessionFactory;
     }
     @Override
-    public void save(PropertyInfo propertyInfo) {
+    public boolean save(PropertyInfo propertyInfo) {
         Transaction transaction = null;
-
+        boolean isSuccessful = false;
         try  {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
             session.save(propertyInfo);
             transaction.commit();
+            isSuccessful = true;
         }
         catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -38,6 +39,7 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
         }
 
         logger.debug(String.format("The propertyInfo %s was inserted into the table.", propertyInfo.toString()));
+        return isSuccessful;
     }
 
     @Override

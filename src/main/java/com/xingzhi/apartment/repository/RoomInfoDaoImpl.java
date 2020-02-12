@@ -24,19 +24,22 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    public void save(RoomInfo roomInfo) {
+    public boolean save(RoomInfo roomInfo) {
             Transaction transaction = null;
+            boolean isSuccessful = false;
             try  {
                 Session session = HibernateUtil.getSessionFactory().getCurrentSession();
                 transaction = session.beginTransaction();
                 session.save(roomInfo);
                 transaction.commit();
+                isSuccessful = true;
             }
             catch (Exception e) {
                 if (transaction != null) transaction.rollback();
                 logger.error(e.getMessage());
             }
             logger.debug(String.format("The account %s was inserted into the table.", roomInfo.toString()));
+            return isSuccessful;
     }
 
     @Override
