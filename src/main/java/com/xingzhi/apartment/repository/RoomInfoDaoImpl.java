@@ -4,16 +4,24 @@ import com.xingzhi.apartment.model.Apartment;
 import com.xingzhi.apartment.model.RoomInfo;
 import com.xingzhi.apartment.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public class RoomInfoDaoImpl implements RoomInfoDao {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger;
+    private SessionFactory sessionFactory;
+    @Autowired
+    public RoomInfoDaoImpl(Logger logger, SessionFactory sessionFactory) {
+        this.logger = logger;
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void save(RoomInfo roomInfo) {
