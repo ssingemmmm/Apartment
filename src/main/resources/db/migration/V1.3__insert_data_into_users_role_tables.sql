@@ -1,14 +1,14 @@
 insert into role (name, allowed_resource, allowed_read, allowed_create, allowed_update, allowed_delete) values
 ('Admin', '/', 'Y', 'Y', 'Y', 'Y'),
-('Manager', '/apts,/apartments,/propertyInfos,/pis,/roomInfos,/ris', 'Y', 'Y', 'Y', 'N'),
-('user', '/apts,/apartments,/propertyInfos,/pis,/roomInfos,/ris', 'Y', 'N', 'N', 'N')
+('Manager', '/cus,/customers,/ord,/orders,/prod,/products', 'Y', 'Y', 'Y', 'N'),
+('user', '/ord,/orders,/prod,/products', 'Y', 'N', 'N', 'N')
 ;
 commit;
 
 insert into users (name, password, first_name, last_name, email) values
-('A', '25f9e794323b453885f5181f1b624d0b', 'A', 'A', 'A@apartment.com'),
-('B', '25f9e794323b453885f5181f1b624d0b', 'B', 'B', 'B@apartment.com'),
-('C', '25f9e794323b453885f5181f1b624d0b', 'C', 'C', 'C@apartment.com')
+('a', 'c4ca4238a0b923820dcc509a6f75849b', 'a', 'a', 'a@apartment.com'),
+('b', 'c4ca4238a0b923820dcc509a6f75849b', 'b', 'b', 'B@apartment.com'),
+('c', 'c4ca4238a0b923820dcc509a6f75849b', 'c', 'c', 'C@apartment.com')
 ;
 commit;
 

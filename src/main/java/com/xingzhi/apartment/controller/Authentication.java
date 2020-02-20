@@ -15,13 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-//@Scope(value = WebApplicationContext.SCOPE_APPLICATION)
-//@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @RequestMapping(value = {"/auth"})
 public class Authentication {
     private AuthService authService;
 
-    @Autowired
     public Authentication(AuthService authService) {
         this.authService = authService;
     }

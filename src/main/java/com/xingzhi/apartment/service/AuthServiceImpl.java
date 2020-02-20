@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService{
     private Logger logger;
     private UserService userService;
     private static String AUTH_URI = "/auth";
@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public int authorize(HttpServletRequest req) {
+    public int authorize(HttpServletRequest req){
         int statusCode = HttpServletResponse.SC_UNAUTHORIZED;
         String uri = req.getRequestURI();
         String verb = req.getMethod();

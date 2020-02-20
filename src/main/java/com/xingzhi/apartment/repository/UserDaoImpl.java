@@ -3,6 +3,7 @@ package com.xingzhi.apartment.repository;
 import com.xingzhi.apartment.model.User;
 import com.xingzhi.apartment.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -10,16 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserDaoImpl implements UserDao {
-    @Autowired
+public class UserDaoImpl implements UserDao{
     private Logger logger;
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    public UserDaoImpl(Logger logger, SessionFactory sessionFactory) {
+        this.logger = logger;
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
-    public boolean save(User user) {
+    public boolean save(User user){
+        String msg = String.format("The user %s was inserted into the table.", user.toString());
         Transaction transaction = null;
         boolean isSuccess = true;
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -27,11 +35,10 @@ public class UserDaoImpl implements UserDao {
         catch (Exception e) {
             isSuccess = false;
             if (transaction != null) transaction.rollback();
-            logger.error(e.getMessage());
+            msg = e.getMessage();
         }
 
-        if (isSuccess) logger.debug(String.format("The user %s was inserted into the table.", user.toString()));
-
+        logger.debug(msg);
         return isSuccess;
     }
 
@@ -39,7 +46,7 @@ public class UserDaoImpl implements UserDao {
     public User getUserByEmail(String email) {
         String hql = "FROM User as u where lower(u.email) = :email";
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery(hql);
             query.setParameter("email", email.toLowerCase());
 
@@ -52,7 +59,7 @@ public class UserDaoImpl implements UserDao {
         String hql = "FROM User as u where lower(u.email) = :email and u.password = :password";
         logger.debug(String.format("User email: %s, password: %s", email, password));
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery(hql);
             query.setParameter("email", email.toLowerCase().trim());
             query.setParameter("password", password);

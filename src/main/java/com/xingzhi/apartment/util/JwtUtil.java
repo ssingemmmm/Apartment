@@ -15,18 +15,21 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+
 public class JwtUtil {
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
     private static final String SECRET_KEY = System.getProperty("secret.key");
-    private static final String ISSUER = "com.ascending";
+    private static final String ISSUER = "com.xingzhi";
     private static final long EXPIRATION_TIME = 86400 * 1000;
 
     public static String generateToken(User user) {
         logger.debug(user.toString());
         //JWT signature algorithm using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
         //Sign JWT with SECRET_KEY
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
+
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         Claims claims = Jwts.claims();
