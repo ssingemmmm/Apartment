@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +68,7 @@ public class ApartmentDaoImpl implements ApartmentDao{
         return updatedCount;
     }
 
+    @Cacheable(cacheNames = "apartments")
     public List<Apartment> getApartments() {
         String hql = "FROM Apartment";
 
@@ -77,6 +79,7 @@ public class ApartmentDaoImpl implements ApartmentDao{
     }
 
     @Override
+    @Cacheable(cacheNames = "apartments")
     public Apartment getApartmentByName(String name) {
         String hql = "FROM Apartment as apt where apt.name = :name";
 
@@ -125,6 +128,7 @@ public class ApartmentDaoImpl implements ApartmentDao{
     }
 
     @Override
+    @Cacheable(cacheNames = "apartments")
     public List<Apartment> getApartmentByNameWithAllRoomInfo(String name) {
         if (name == null) return null;
 
