@@ -128,7 +128,6 @@ public class ApartmentDaoImpl implements ApartmentDao{
     }
 
     @Override
-    @Cacheable(cacheNames = "apartments")
     public List<Apartment> getApartmentByNameWithAllRoomInfo(String name) {
         if (name == null) return null;
 

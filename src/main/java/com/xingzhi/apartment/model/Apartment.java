@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "apartment")
-public class Apartment {
+public class Apartment extends Model{
 
     public Apartment(int id, String name, String lowestPrice, String smallestSize, String photo) {
         this.id = id;

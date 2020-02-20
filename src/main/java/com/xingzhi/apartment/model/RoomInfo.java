@@ -7,7 +7,7 @@ import javax.persistence.*;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "roominfo")
-public class RoomInfo {
+public class RoomInfo extends Model{
 
     public RoomInfo(int id, String size, String priceRange, String layoutPhoto){
         this.id = id;
