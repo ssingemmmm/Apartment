@@ -33,7 +33,7 @@ public class PropertyInfoDao {
             rs = stmt.executeQuery(sql);
             //step 4: extract data from result set
             while (rs.next()) {
-                int id=rs.getInt("id");
+                Integer id=rs.getInt("id");
                 String phoneNumber=rs.getString("phone_number");
                 String address=rs.getString("address");
                 String email=rs.getString("email");
@@ -99,7 +99,7 @@ public class PropertyInfoDao {
     }
 
     //delete data
-    public void deletePropertyInfo(int id){
+    public void deletePropertyInfo(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -164,7 +164,7 @@ public class PropertyInfoDao {
     }
 
     //search roomInfo
-    public PropertyInfo searchPropertyInfo(int id){
+    public PropertyInfo searchPropertyInfo(Integer id){
         PropertyInfo propertyInfo = new PropertyInfo();
         Connection conn = null;
         PreparedStatement stmt = null;

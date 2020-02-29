@@ -47,7 +47,6 @@ public class AppInitializer {
         if (HibernateUtil.getSessionFactory() == null) {
             throw new NullPointerException("The Hibernate session factory is NULL!");
         }
-
         SpringApplication.run(AppInitializer.class, args);
     }
 }

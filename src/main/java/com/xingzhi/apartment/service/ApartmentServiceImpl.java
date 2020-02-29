@@ -25,8 +25,8 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
-    public int updateApartmentLowestPrice(String name, String lowestPrice) {
-        return apartmentDao.updateApartmentLowestPrice(name,lowestPrice);
+    public int updateApartmentLowestPrice(Integer id, String lowestPrice) {
+        return apartmentDao.updateApartmentLowestPrice(id,lowestPrice);
     }
 
     @Override
@@ -40,11 +40,6 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
-    public Apartment getApartmentById(int id) {
-        return apartmentDao.getApartmentById(id);
-    }
-
-    @Override
     public boolean deleteApartmentByName(String name) {
         return apartmentDao.deleteApartmentByName(name);
     }
@@ -53,4 +48,15 @@ public class ApartmentServiceImpl implements ApartmentService {
     public List<Apartment> getApartmentByNameWithAllRoomInfo(String name) {
         return apartmentDao.getApartmentByNameWithAllRoomInfo(name);
     }
+
+    @Override
+    public int updateApartmentInfo(Integer id, Apartment apartment){
+        return apartmentDao.updateApartment(id, apartment);
+    }
+
+    @Override
+    public Apartment getApartmentById(Integer id){ return apartmentDao.getApartmentById(id);}
+
+    @Override
+    public boolean deleteApartmentById(Integer id){ return apartmentDao.deleteApartmentById(id);}
 }

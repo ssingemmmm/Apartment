@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -44,7 +43,7 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    public int updateRoomInfoPrice(int id, String priceRange) {
+    public int updateRoomInfoPrice(Integer id, String priceRange) {
         String hql = "UPDATE RoomInfo as rm set rm.priceRange = :priceRange where rm.id = :id";
         int updatedCount = 0;
         Transaction transaction = null;
@@ -69,6 +68,23 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
+    public int updateRoomInfo(Integer id, RoomInfo roomInfo) {
+        int updatedCount = 0;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(roomInfo);
+            transaction.commit();
+            updatedCount++;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            logger.error(e.getMessage());
+        }
+        logger.debug(String.format("The roomInfo %d was updated, total updated record(s): %d", id, updatedCount));
+        return updatedCount;
+    }
+
+    @Override
     @Cacheable(cacheNames = "roomInfos")
     public List<RoomInfo> getRoomInfos() {
         String hql = "FROM RoomInfo ";
@@ -82,11 +98,11 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     @Override
     @Cacheable(cacheNames = "roomInfos")
     public List<RoomInfo> getRoomInfoByApartmentName(String name) {
-        String hql = "FROM RoomInfo as rm where rm.apartment.name = :name";
+        String hql = "FROM RoomInfo as rm where lower(rm.apartment.name) = :name";
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<RoomInfo> query = session.createQuery(hql);
-            query.setParameter("name", name);
+            query.setParameter("name", name.toLowerCase());
             List<RoomInfo> roomInfos = query.list();
             roomInfos.forEach(System.out::println);
 
@@ -95,7 +111,7 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    public RoomInfo getRoomInfoById(int id){
+    public RoomInfo getRoomInfoById(Integer id){
         String hql = "FROM RoomInfo where id = :id";
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -106,7 +122,7 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    public boolean deleteRoomInfoById(int id) {
+    public boolean deleteRoomInfoById(Integer id) {
         String hql = "DELETE RoomInfo where id = :id";
         int deletedCount = 0;
         Transaction transaction = null;
@@ -128,5 +144,27 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
         logger.debug(String.format("The roomInfo %d was deleted", id));
 
         return deletedCount >= 1 ? true : false;
+    }
+
+    @Override
+    public RoomInfo getRoomInfoByNameSize(String name, String size) {
+        String hql = "FROM RoomInfo as rm where lower(rm.apartment.name)=lower(:name) AND lower(rm.size)=lower(:size)";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<RoomInfo> query = session.createQuery(hql);
+            query.setParameter("name", name);
+            query.setParameter("size", size);
+            return query.uniqueResult();
+        }
+    }
+
+    @Override
+    public RoomInfo getRoomInfoByNamePriceRange(String name, String priceRange) {
+        String hql = "FROM RoomInfo as rm where lower(rm.apartment.name)= :name and lower(rm.priceRange)=:priceRange";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<RoomInfo> query = session.createQuery(hql);
+            query.setParameter("name", name.toLowerCase());
+            query.setParameter("priceRange", priceRange.toLowerCase());
+            return query.uniqueResult();
+        }
     }
 }

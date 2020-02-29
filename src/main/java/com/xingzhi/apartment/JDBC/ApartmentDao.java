@@ -31,8 +31,8 @@ public class ApartmentDao {
             rs = stmt.executeQuery(sql);
             //step 4: extract data from result set
             while (rs.next()) {
-                int propertyInfoId = rs.getInt("property_info_id");
-                int id = rs.getInt("id");
+
+                Integer id = rs.getInt("id");
                 String name = rs.getString("name");
                 String lowestPrice = rs.getString("lowest_price");
                 String smallestSize = rs.getString("smallest_size");
@@ -98,7 +98,7 @@ public class ApartmentDao {
     }
 
     //delete data
-    public void deleteApartment(int id){
+    public void deleteApartment(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -161,7 +161,7 @@ public class ApartmentDao {
     }
 
     //search apartment
-    public Apartment searchApartment(int id){
+    public Apartment searchApartment(Integer id){
         Apartment apartment = new Apartment();
         Connection conn = null;
         PreparedStatement stmt = null;

@@ -1,17 +1,18 @@
 package com.xingzhi.apartment.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "apartment")
-public class Apartment extends Model{
+public class Apartment implements Serializable {
 
-    public Apartment(int id, String name, String lowestPrice, String smallestSize, String photo) {
-        this.id = id;
+    public Apartment(String name, String lowestPrice, String smallestSize, String photo) {
         this.name = name;
         this.lowestPrice = lowestPrice;
         this.smallestSize = smallestSize;
@@ -20,22 +21,27 @@ public class Apartment extends Model{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    @JsonView({Views.Public.class})
+    private Integer id;
 
     @Column(name = "name")
+    @JsonView({Views.Public.class})
     private String name;
 
     @Column(name = "lowest_price")
+    @JsonView({Views.Public.class})
     private String lowestPrice;
 
     @Column(name = "smallest_size")
+    @JsonView({Views.Public.class})
     private String smallestSize;
 
     @Column(name = "photo")
+    @JsonView({Views.Public.class})
     private String photo;
 
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonView({Views.Internal.class})
     private Set<RoomInfo> roomInfos;
 
     @OneToOne(mappedBy = "apartment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -44,10 +50,9 @@ public class Apartment extends Model{
 
     public Apartment() {}
 
+    public Integer getId() { return id; }
 
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -79,9 +84,9 @@ public class Apartment extends Model{
     }
 
     public void setRoomInfos(Set<RoomInfo> roomInfos) {
-        for (RoomInfo r : roomInfos) {
-            if (r.getApartment() == null) r.setApartment(this);
-        }
+//        for (RoomInfo r : roomInfos) {
+//            if (r.getApartment() == null) r.setApartment(this);
+//        }
         this.roomInfos = roomInfos;
     }
 

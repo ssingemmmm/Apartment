@@ -33,8 +33,7 @@ public class RoomInfoDao {
             rs = stmt.executeQuery(sql);
             //step 4: extract data from result set
             while (rs.next()) {
-                int id = rs.getInt("id");
-                int apartmentId = rs.getInt("apartment_id");
+                Integer id = rs.getInt("id");
                 String size = rs.getString("size");
                 String priceRange = rs.getString("price_range");
                 String layoutPhoto = rs.getString("layout_photo");
@@ -100,7 +99,7 @@ public class RoomInfoDao {
     }
 
     //delete data
-    public void deleteRoomInfo(int id){
+    public void deleteRoomInfo(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -165,7 +164,7 @@ public class RoomInfoDao {
     }
 
     //search roomInfo
-    public RoomInfo searchRoomInfo(int id){
+    public RoomInfo searchRoomInfo(Integer id){
         RoomInfo roomInfo = new RoomInfo();
         Connection conn = null;
         PreparedStatement stmt = null;

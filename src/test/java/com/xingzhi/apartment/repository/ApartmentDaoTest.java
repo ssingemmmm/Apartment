@@ -25,57 +25,44 @@ public class ApartmentDaoTest {
     @Before
     public void init() {
         testApartment = new Apartment();
-        testApartment.setId(9999);
         testApartment.setName("test");
+        apartmentDao.save(testApartment);
     }
 
-
-    @Test
-    public void saveAndDelete(){
-        apartmentDao.save(testApartment);
-        int id = apartmentDao.getApartmentById(testApartment.getId()).getId();
-        Assert.assertEquals(testApartment.getId(),id);
+    @After
+    public void tearDown(){
         apartmentDao.deleteApartmentByName(testApartment.getName());
     }
 
     @Test
     public void getApartments() {
         List<Apartment> apartments = apartmentDao.getApartments();
-        int expectedNumOfDept = 4;
         apartments.forEach(em -> System.out.println(em.toString()));
-        Assert.assertEquals(expectedNumOfDept, apartments.size());
     }
 
     @Test
     public void getApartmentById() {
-        int id = 2;
+        Integer id = 2;
         Apartment apartment = apartmentDao.getApartmentById(id);
         Assert.assertEquals(id, apartment.getId());
     }
 
     @Test
     public void getApartmentByName() {
-        String name = "A";
-        Apartment apartment = apartmentDao.getApartmentByName(name);
+        Apartment apartment = apartmentDao.getApartmentByName(testApartment.getName());
         Assert.assertNotNull(apartment);
     }
 
-
     @Test
     public void updateApartmentLowestPrice() {
-        String name = "A";
-        String lowestPrice = "$1";
-        String rightPrice = apartmentDao.getApartmentByName(name).getLowestPrice();
-        apartmentDao.updateApartmentLowestPrice(name, lowestPrice);
-        Apartment apartment = apartmentDao.getApartmentByName(name);
-        Assert.assertEquals(lowestPrice, apartment.getLowestPrice());
-        apartmentDao.updateApartmentLowestPrice(name,rightPrice);
+        String lowestPrice="test";
+        int a = apartmentDao.updateApartmentLowestPrice(apartmentDao.getApartmentByName(testApartment.getName()).getId(),lowestPrice);
+        Assert.assertEquals(1,a);
     }
 
     @Test
     public void getApartmentByNameWithRoomInfo(){
-        String name = "A";
-        List<Apartment> results = apartmentDao.getApartmentByNameWithAllRoomInfo(name);
+        List<Apartment> results = apartmentDao.getApartmentByNameWithAllRoomInfo(testApartment.getName());
         Assert.assertEquals(1,results.size());
     }
 

@@ -23,6 +23,7 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
         this.logger = logger;
         this.sessionFactory = sessionFactory;
     }
+    //propertyInfo.setApartment(apt);
     @Override
     public boolean save(PropertyInfo propertyInfo) {
         Transaction transaction = null;
@@ -44,30 +45,19 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
     }
 
     @Override
-    public int updatePropertyInfo(int id, PropertyInfo propertyInfo) {
-        String hql = "UPDATE PropertyInfo as pi set pi.address = :address, pi.email = :email, pi.officeHours = :officeHours, pi.phoneNumber = :phoneNumber" +
-                " where pi.id = :id";
+    public int updatePropertyInfo(Integer id, PropertyInfo propertyInfo) {
         int updatedCount = 0;
         Transaction transaction = null;
-
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Apartment> query = session.createQuery(hql);
-            query.setParameter("id", id);
-            query.setParameter("address", propertyInfo.getAddress());
-            query.setParameter("email", propertyInfo.getEmail());
-            query.setParameter("officeHours", propertyInfo.getOfficeHours());
-            query.setParameter("phoneNumber", propertyInfo.getPhoneNumber());
             transaction = session.beginTransaction();
-            updatedCount = query.executeUpdate();
+            session.saveOrUpdate(propertyInfo);
             transaction.commit();
-        }
-        catch (Exception e) {
+            updatedCount++;
+        } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             logger.error(e.getMessage());
         }
-
         logger.debug(String.format("The propertyInfo %d was updated, total updated record(s): %d", id, updatedCount));
-
         return updatedCount;
     }
 
@@ -83,8 +73,19 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
     }
 
     @Override
-    public PropertyInfo getPropertyInfoById(int id) {
-        String hql = "FROM PropertyInfo where id = :id";
+    public PropertyInfo getPropertyInfoByName(String name) {
+        String hql = "FROM PropertyInfo as pi where lower(pi.apartment.name) = :name";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<PropertyInfo> query = session.createQuery(hql);
+            query.setParameter("name", name.toLowerCase());
+            return query.uniqueResult();
+        }
+    }
+
+    @Override
+    public PropertyInfo getPropertyInfoById(Integer id) {
+        String hql = "FROM PropertyInfo as pi where pi.id = :id";
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<PropertyInfo> query = session.createQuery(hql);
@@ -94,11 +95,10 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
     }
 
     @Override
-    public boolean deletePropertyInfoById(int id) {
+    public boolean deletePropertyInfoById(Integer id) {
         String hql = "DELETE PropertyInfo where id = :id";
         int deletedCount = 0;
         Transaction transaction = null;
-
         try {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
@@ -112,9 +112,7 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
             if (transaction != null) transaction.rollback();
 //            logger.error(e.getMessage());
         }
-
         logger.debug(String.format("The propertyInfo %d was deleted", id));
-
         return deletedCount >= 1 ? true : false;
     }
 }

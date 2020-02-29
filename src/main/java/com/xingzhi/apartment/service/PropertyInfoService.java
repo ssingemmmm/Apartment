@@ -5,9 +5,13 @@ import com.xingzhi.apartment.model.PropertyInfo;
 import java.util.List;
 
 public interface PropertyInfoService {
-    boolean save(PropertyInfo propertyInfo);
-    int updatePropertyInfo(int id, PropertyInfo propertyInfo);
+    boolean saveByName(String name, PropertyInfo propertyInfo);
+    boolean saveById(Integer id, PropertyInfo propertyInfo);
+    int updatePropertyInfo(Integer id, PropertyInfo propertyInfo);
     List<PropertyInfo> getPropertyInfos();
-    PropertyInfo getPropertyInfoById(int id);
-    boolean deletePropertyInfoById(int id);
+    PropertyInfo getPropertyInfoById(Integer id);
+    PropertyInfo getPropertyInfoByName(String name);
+    boolean deletePropertyInfoByName(String name);
+    boolean deletePropertyInfoById(Integer id);
+    boolean save(PropertyInfo propertyInfo);
 }

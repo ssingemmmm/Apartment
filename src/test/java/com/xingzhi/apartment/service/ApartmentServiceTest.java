@@ -2,6 +2,7 @@ package com.xingzhi.apartment.service;
 
 import com.xingzhi.apartment.init.AppInitializer;
 import com.xingzhi.apartment.model.Apartment;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,58 +23,46 @@ public class ApartmentServiceTest {
     @Before
     public void init() {
         testApartment = new Apartment();
-        testApartment.setId(9999);
         testApartment.setName("test");
+        apartmentService.save(testApartment);
     }
 
-
-    @Test
-    public void saveAndDelete(){
-        apartmentService.save(testApartment);
-        int id = apartmentService.getApartmentById(testApartment.getId()).getId();
-        Assert.assertEquals(testApartment.getId(),id);
+    @After
+    public void tearDown(){
         apartmentService.deleteApartmentByName(testApartment.getName());
     }
+
 
     @Test
     public void getApartments() {
         List<Apartment> apartments = apartmentService.getApartments();
-        int expectedNumOfDept = 4;
         apartments.forEach(em -> System.out.println(em.toString()));
-        Assert.assertEquals(expectedNumOfDept, apartments.size());
-    }
-
-    @Test
-    public void getApartmentById() {
-        int id = 2;
-        Apartment apartment = apartmentService.getApartmentById(id);
-        Assert.assertEquals(id, apartment.getId());
     }
 
     @Test
     public void getApartmentByName() {
-        String name = "A";
-        Apartment apartment = apartmentService.getApartmentByName(name);
+        Apartment apartment = apartmentService.getApartmentByName(testApartment.getName());
         Assert.assertNotNull(apartment);
     }
 
 
     @Test
     public void updateApartmentLowestPrice() {
-        String name = "A";
-        String lowestPrice = "$1";
-        String rightPrice = apartmentService.getApartmentByName(name).getLowestPrice();
-        apartmentService.updateApartmentLowestPrice(name, lowestPrice);
-        Apartment apartment = apartmentService.getApartmentByName(name);
-        Assert.assertEquals(lowestPrice, apartment.getLowestPrice());
-        apartmentService.updateApartmentLowestPrice(name,rightPrice);
+        String lowestPrice="test";
+        int a = apartmentService.updateApartmentLowestPrice(apartmentService.getApartmentByName(testApartment.getName()).getId(),lowestPrice);
+        Assert.assertEquals(1,a);
     }
 
     @Test
     public void getApartmentByNameWithRoomInfo(){
-        String name = "A";
-        List<Apartment> results = apartmentService.getApartmentByNameWithAllRoomInfo(name);
+        List<Apartment> results = apartmentService.getApartmentByNameWithAllRoomInfo(testApartment.getName());
         Assert.assertEquals(1,results.size());
     }
+
+    @Test
+    public void updateApartmentInfo(){
+        testApartment.setLowestPrice("test");
+        int a = apartmentService.updateApartmentInfo(apartmentService.getApartmentByName(testApartment.getName()).getId(),testApartment);
+        Assert.assertEquals(1,a); }
 
 }

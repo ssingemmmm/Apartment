@@ -1,23 +1,25 @@
 package com.xingzhi.apartment.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "roominfo")
-public class RoomInfo extends Model{
+public class RoomInfo implements Serializable {
 
-    public RoomInfo(int id, String size, String priceRange, String layoutPhoto){
-        this.id = id;
+    public RoomInfo(String size, String priceRange, String layoutPhoto){
         this.size = size;
         this.priceRange = priceRange;
         this.layoutPhoto = layoutPhoto;
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    @JsonView({Views.Public.class})
+    private Integer id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,19 +27,22 @@ public class RoomInfo extends Model{
     private Apartment apartment;
 
     @Column(name = "size")
+    @JsonView({Views.Public.class})
     private String size;
 
     @Column(name = "price_range")
+    @JsonView({Views.Public.class})
     private String priceRange;
 
     @Column(name = "layout_photo")
+    @JsonView({Views.Public.class})
     private String layoutPhoto;
 
     public RoomInfo(){}
 
-    public int getId(){ return id; }
+    public Integer getId(){ return id; }
 
-    public void setId(int id){ this.id=id; }
+    public void setId(Integer id){ this.id=id; }
 
     public String getSize(){
         return size;

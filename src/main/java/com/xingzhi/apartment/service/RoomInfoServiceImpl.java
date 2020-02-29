@@ -1,5 +1,9 @@
 package com.xingzhi.apartment.service;
+import com.amazonaws.services.alexaforbusiness.model.Room;
+import com.xingzhi.apartment.model.Apartment;
+import com.xingzhi.apartment.model.PropertyInfo;
 import com.xingzhi.apartment.model.RoomInfo;
+import com.xingzhi.apartment.repository.ApartmentDao;
 import com.xingzhi.apartment.repository.RoomInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -12,10 +16,19 @@ import java.util.List;
 public class RoomInfoServiceImpl implements RoomInfoService{
 
     private RoomInfoDao roomInfoDao;
+    private ApartmentDao apartmentDao;
 
     @Autowired
-    public RoomInfoServiceImpl(RoomInfoDao roomInfoDao){
+    public RoomInfoServiceImpl(RoomInfoDao roomInfoDao, ApartmentDao apartmentDao){
         this.roomInfoDao = roomInfoDao;
+        this.apartmentDao = apartmentDao;
+    }
+
+    @Override
+    public boolean saveByName(String name, RoomInfo roomInfo) {
+        Apartment apartment = apartmentDao.getApartmentByName(name);
+        roomInfo.setApartment(apartment);
+        return roomInfoDao.save(roomInfo);
     }
 
     @Override
@@ -24,7 +37,12 @@ public class RoomInfoServiceImpl implements RoomInfoService{
     }
 
     @Override
-    public int updateRoomInfoPrice(int id, String priceRange) {
+    public int updateRoomInfo(Integer id, RoomInfo roomInfo) {
+        return roomInfoDao.updateRoomInfo(id, roomInfo);
+    }
+
+    @Override
+    public int updateRoomInfoPrice(Integer id, String priceRange) {
         return roomInfoDao.updateRoomInfoPrice(id, priceRange);
     }
 
@@ -39,12 +57,35 @@ public class RoomInfoServiceImpl implements RoomInfoService{
     }
 
     @Override
-    public RoomInfo getRoomInfoById(int id) {
+    public RoomInfo getRoomInfoByNameSize(String name, String size) {
+        return roomInfoDao.getRoomInfoByNameSize(name,size);
+    }
+
+    @Override
+    public boolean deleteRoomInfoByNameSize(String name, String size) {
+        int id = roomInfoDao.getRoomInfoByNameSize(name,size).getId();
+        return roomInfoDao.deleteRoomInfoById(id);
+    }
+
+    @Override
+    public RoomInfo getRoomInfoByNamePriceRange(String name, String priceRange){
+        return roomInfoDao.getRoomInfoByNamePriceRange(name,priceRange);
+    }
+
+    @Override
+    public RoomInfo getRoomInfoById(Integer id) {
         return roomInfoDao.getRoomInfoById(id);
     }
 
     @Override
-    public boolean deleteRoomInfoById(int id) {
+    public boolean deleteRoomInfoById(Integer id) {
         return roomInfoDao.deleteRoomInfoById(id);
+    }
+
+    @Override
+    public boolean saveById(Integer id, RoomInfo roomInfo){
+        Apartment apartment = apartmentDao.getApartmentById(id);
+        roomInfo.setApartment(apartment);
+        return roomInfoDao.save(roomInfo);
     }
 }

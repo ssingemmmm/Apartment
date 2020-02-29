@@ -1,7 +1,10 @@
 package com.xingzhi.apartment.service;
 
 import com.xingzhi.apartment.init.AppInitializer;
+import com.xingzhi.apartment.model.Apartment;
+import com.xingzhi.apartment.model.PropertyInfo;
 import com.xingzhi.apartment.model.RoomInfo;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,51 +20,75 @@ public class RoomInfoServiceTest {
 
     @Autowired
     private RoomInfoService roomInfoService;
+    @Autowired
+    private ApartmentService apartmentService;
     private RoomInfo testRoomInfo;
+    private Apartment testApartment;
 
 
     @Before
     public void init() {
         testRoomInfo = new RoomInfo();
-        testRoomInfo.setId(9999);
         testRoomInfo.setSize("test");
-
-    }
-
-    @Test
-    public void saveAndDelete(){
+        testRoomInfo.setPriceRange("test");
+        testApartment = new Apartment();
+        testApartment.setName("TEST");
+        testRoomInfo.setApartment(testApartment);
+        apartmentService.save(testApartment);
         roomInfoService.save(testRoomInfo);
-        int id = roomInfoService.getRoomInfoById(testRoomInfo.getId()).getId();
-        Assert.assertEquals(testRoomInfo.getId(),id);
-        roomInfoService.deleteRoomInfoById(id);
     }
+
+    @After
+    public void tearDown(){
+        roomInfoService.deleteRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize());
+        apartmentService.deleteApartmentByName(testApartment.getName());
+    }
+
 
     @Test
     public void getRoomInfos() {
         List<RoomInfo> roomInfos = roomInfoService.getRoomInfos();
-        int expectedNumOfRoomInfos = 4;
         roomInfos.forEach(em -> System.out.println(em.toString()));
-        Assert.assertEquals(expectedNumOfRoomInfos, roomInfos.size());
+        Assert.assertNotNull(roomInfos);
     }
 
     @Test
     public void getRoomInfoByApartmentName() {
-        int id = 2;
         List<RoomInfo> roomInfos = roomInfoService.getRoomInfoByApartmentName("A");
-        int expectedNumOfRoomInfos = 1;
         roomInfos.forEach(em -> System.out.println(em.toString()));
-        Assert.assertEquals(expectedNumOfRoomInfos, roomInfos.size());
+        Assert.assertNotNull(roomInfos);
     }
 
     @Test
     public void updateRoomInfoPrice() {
-        int id = 1;
         String priceRange = "$1-$2";
-        String rightPrice = roomInfoService.getRoomInfoById(id).getPriceRange();
+        testRoomInfo.setPriceRange(priceRange);
+        int id = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize()).getId();
         roomInfoService.updateRoomInfoPrice(id, priceRange);
-        RoomInfo roomInfo = roomInfoService.getRoomInfoById(id);
+        RoomInfo roomInfo = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize());
         Assert.assertEquals(priceRange, roomInfo.getPriceRange());
-        roomInfoService.updateRoomInfoPrice(id,rightPrice);
+    }
+
+    @Test
+    public void updateRoomInfo(){
+        int id = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize()).getId();
+        String size = "UPDATED!!!!!!!!!!!!!!!!!";
+        testRoomInfo.setSize("UPDATED!!!!!!!!!!!!!!!!!");
+        roomInfoService.updateRoomInfo(id, testRoomInfo);
+        RoomInfo roomInfo = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize());
+        Assert.assertEquals(size, roomInfo.getSize());
+    }
+
+    @Test
+    public void getRoomInfoByNameSize(){
+        RoomInfo roomInfo = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getSize());
+        Assert.assertNotNull(roomInfo);
+    }
+
+    @Test
+    public void getRoomInfoByNamePriceRange(){
+        RoomInfo roomInfo = roomInfoService.getRoomInfoByNameSize(testApartment.getName(),testRoomInfo.getPriceRange());
+        Assert.assertNotNull(roomInfo);
     }
 
 }

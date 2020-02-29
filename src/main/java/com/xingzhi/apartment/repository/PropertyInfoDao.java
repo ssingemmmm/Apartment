@@ -5,8 +5,9 @@ import java.util.List;
 
 public interface PropertyInfoDao {
     boolean save(PropertyInfo propertyInfo);
-    int updatePropertyInfo(int id, PropertyInfo propertyInfo);
+    int updatePropertyInfo(Integer id, PropertyInfo propertyInfo);
     List<PropertyInfo> getPropertyInfos();
-    PropertyInfo getPropertyInfoById(int id);
-    boolean deletePropertyInfoById(int id);
+    PropertyInfo getPropertyInfoByName(String name);
+    PropertyInfo getPropertyInfoById(Integer id);
+    boolean deletePropertyInfoById(Integer id);
 }

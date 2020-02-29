@@ -16,12 +16,12 @@ CREATE TABLE propertyInfo (
    phone_number    VARCHAR(30),
    email           VARCHAR(50),
    office_hours    VARCHAR(50),
-   apartment_id  INTEGER
+   apartment_id  INTEGER NOT NULL UNIQUE
 );
 ALTER TABLE propertyInfo ADD CONSTRAINT property_pk PRIMARY KEY ( id );
 CREATE TABLE roomInfo (
    id             SERIAL NOT NULL,
-   apartment_id   INTEGER,
+   apartment_id   INTEGER NOT NULL,
    size           VARCHAR(30),
    price_range	  VARCHAR(30),
    layout_photo   VARCHAR(100)
