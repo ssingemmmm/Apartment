@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -33,20 +34,16 @@ import org.springframework.context.annotation.Scope;
     -Dserver.port=8080
 */
 
-@SpringBootApplication(scanBasePackages = {"com.xingzhi.apartment"},
-                       exclude = {
-                       DataSourceAutoConfiguration.class,
-                       DataSourceTransactionManagerAutoConfiguration.class,
-                       HibernateJpaAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.xingzhi.apartment"})
 @ServletComponentScan(basePackages = {"com.xingzhi.apartment.servlet",
                                       "com.xingzhi.apartment.filter",
                                       "com.xingzhi.apartment.listener"})
 @EnableCaching
-public class AppInitializer {
+public class AppInitializer extends SpringBootServletInitializer {
     public static void main(String[] args) throws NullPointerException{
-        if (HibernateUtil.getSessionFactory() == null) {
-            throw new NullPointerException("The Hibernate session factory is NULL!");
-        }
+//        if (HibernateUtil.getSessionFactory() == null) {
+//            throw new NullPointerException("The Hibernate session factory is NULL!");
+//        }
         SpringApplication.run(AppInitializer.class, args);
     }
 }

@@ -6,7 +6,10 @@ package com.xingzhi.apartment.filter;
  *  Date: 06/2019
  */
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -17,28 +20,29 @@ import java.util.*;
 @WebFilter(filterName = "logFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
 public class LogFilter implements Filter {
     @Autowired
-    private Logger logger;
+    private Logger logger = LoggerFactory.getLogger(getClass());
     private final List<String> excludedWords = Arrays.asList("newPasswd", "confirmPasswd", "passwd", "password");
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
 
     @Override
     public void init(FilterConfig filterConfig) {
         // TODO Auto-generated method stub
-        logger.debug(">>>>>>>>>>Destroying Filter>>>>>>>>>>");
+        //logger.debug(">>>>>>>>>>Destroying Filter>>>>>>>>>>");
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        long startTime = System.currentTimeMillis();
-        HttpServletRequest req = (HttpServletRequest)request;
-        String logInfo = logInfo(req);
-        logger.info(logInfo.replace("responseTime", String.valueOf(System.currentTimeMillis() - startTime)));
+        if (logger == null) {
+            SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, request.getServletContext());
+        }
+        logger.debug(">>>>>> Entering Filter......");
         filterChain.doFilter(request, response);
+        logger.debug(">>>>>> Exiting Filter......");
     }
 
     public void destroy() {
         // TODO Auto-generated method stub
-        logger.debug(">>>>>>>>>>Initializing Filter>>>>>>>>>>");
+        //logger.debug(">>>>>>>>>>Initializing Filter>>>>>>>>>>");
     }
 
     private boolean isIgnoredWord(String word, List<String> excludedWords) {

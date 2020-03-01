@@ -27,8 +27,7 @@ public class FileController {
     /* Inject value from vm options */
     @Value("${aws.queue.name}")
     private String queueName;
-    @Value("${file.download.dir}")
-    private String fileDownloadDir;
+    private String fileDownloadDir="/Users/apple/Desktop";
 
     private Logger logger;
     private FileService fileService;
