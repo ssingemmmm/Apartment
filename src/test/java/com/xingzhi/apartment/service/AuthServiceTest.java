@@ -17,12 +17,16 @@ import java.util.Map;
 public class AuthServiceTest {
     @Autowired
     AuthService authService;
+    @Autowired
+    UserService userService;
     User user = new User();
 
     @Before
     public void init(){
-        user.setEmail("dwang@training.ascendingdc.com");
-        user.setPassword("25f9e794323b453885f5181f1b624d0b");
+        user.setEmail("abc@abc.com");
+        user.setPassword("c4ca4238a0b923820dcc509a6f75849b");
+        user.setName("abc");
+        userService.save(user);
     }
 
     @Test
