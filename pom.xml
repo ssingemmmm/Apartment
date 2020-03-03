@@ -53,11 +53,11 @@
       <artifactId>hibernate-core</artifactId>
       <version>5.4.9.Final</version>
     </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-c3p0</artifactId>
-      <version>5.4.9.Final</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.hibernate</groupId>-->
+<!--      <artifactId>hibernate-c3p0</artifactId>-->
+<!--      <version>5.4.9.Final</version>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.github.v-ladynev</groupId>
       <artifactId>fluent-hibernate-core</artifactId>
@@ -70,10 +70,10 @@
       <version>1.7.26</version>
     </dependency>
     -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -83,14 +83,14 @@
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-cache</artifactId>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
