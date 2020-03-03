@@ -5,6 +5,7 @@ import com.xingzhi.apartment.JDBC.RoomInfoDao;
 import com.xingzhi.apartment.model.Apartment;
 import com.xingzhi.apartment.model.RoomInfo;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ public class RoomInfoDaoTest {
     private RoomInfo a;
     private RoomInfo b;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private String loggerInfo = System.getenv("logging.level.");
    /* @BeforeClass
     public void classSetup(){
 
@@ -39,15 +39,15 @@ public class RoomInfoDaoTest {
         c.setName("ABC Apartment");
         c.setSmallestSize("studio");
         c.setPhoto("No Photo Available");
-
         apartmentDao.addApartment(c);
+
         roomInfoDao = new RoomInfoDao();
         a = new RoomInfo();
         a.setId(99999);
-
         a.setSize("1b1b");
         a.setPriceRange("1000-1500");
         a.setLayoutPhoto("photo");
+        a.setApartment(c);
         roomInfoDao.addRoomInfo(a);
     }
 
@@ -60,34 +60,33 @@ public class RoomInfoDaoTest {
     @Test
     public void getRoomInfoTest(){
         List<RoomInfo> roomInfos = roomInfoDao.getRoomInfo();
-        for(int i=0;i<roomInfos.size();i++) {
-            logger.info(roomInfos.get(i).getSize());
-        }
+        Assert.assertNotNull(roomInfos);
     }
 
     @Test
     public void searchRoomInfoTest(){
         RoomInfo b = roomInfoDao.searchRoomInfo(a.getId());
-        logger.info("Searching for: "+a.getSize()+" , Searching result returned: "+ b.getSize());
+        Assert.assertEquals(b.getSize(),a.getSize());
     }
 
     @Test
-    public void addRoomInfoTest(){
+    public void addAndDeleteRoomInfoTest(){
         List<RoomInfo> roomInfos = roomInfoDao.getRoomInfo();
         int a=roomInfos.size();
         b = new RoomInfo();
         b.setId(9999);
-
         b.setSize("1b2b");
         b.setPriceRange("1000-1509");
         b.setLayoutPhoto("photo1");
+        b.setApartment(c);
         roomInfoDao.addRoomInfo(b);
         roomInfos = roomInfoDao.getRoomInfo();
         int b=roomInfos.size();
-        logger.info("size before adding "+a+" , size after adding "+b);
+        Assert.assertNotEquals(a,b);
         roomInfoDao.deleteRoomInfo(9999);
         roomInfos = roomInfoDao.getRoomInfo();
-        logger.info("size before deleting "+b+" , size after deleting "+ roomInfos.size() );
+        b=roomInfos.size();
+        Assert.assertEquals(a,b);
     }
 
 
@@ -96,7 +95,7 @@ public class RoomInfoDaoTest {
         a.setSize("changed!!!!");
         roomInfoDao.updateRoomInfo(a);
         RoomInfo d = roomInfoDao.searchRoomInfo(99999);
-        logger.info("name before update: 1b1b , name after update: "+d.getSize());
+        Assert.assertEquals(a.getSize(),d.getSize());
     }
 
 

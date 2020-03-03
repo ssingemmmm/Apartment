@@ -5,6 +5,7 @@ import com.xingzhi.apartment.JDBC.PropertyInfoDao;
 import com.xingzhi.apartment.model.Apartment;
 import com.xingzhi.apartment.model.PropertyInfo;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,11 +16,12 @@ import java.util.List;
 public class PropertyInfoDaoTest {
     private ApartmentDao apartmentDao;
     private Apartment c;
+    private Apartment d;
     private PropertyInfoDao propertyInfoDao;
     private PropertyInfo a;
     private PropertyInfo b;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private String loggerInfo = System.getenv("logging.level.");
+
    /* @BeforeClass
     public void classSetup(){
 
@@ -39,19 +41,16 @@ public class PropertyInfoDaoTest {
         c.setName("ABC Apartment");
         c.setSmallestSize("studio");
         c.setPhoto("No Photo Available");
-
         apartmentDao.addApartment(c);
+
         propertyInfoDao = new PropertyInfoDao();
         a = new PropertyInfo();
-
-
-
         a.setEmail("abc@abc.com");
-
         a.setId(9998);
         a.setOfficeHours("closed");
         a.setPhoneNumber("123123123");
         a.setAddress("Abc st");
+        a.setApartment(c);
         propertyInfoDao.addPropertyInfo(a);
     }
 
@@ -65,58 +64,42 @@ public class PropertyInfoDaoTest {
     @Test
     public void getPropertyInfoTest(){
         List<PropertyInfo> propertyInfos = propertyInfoDao.getPropertyInfo();
-        for(int i=0;i<propertyInfos.size();i++) {
-            logger.info(propertyInfos.get(i).getEmail());
-        }
+        Assert.assertNotNull(propertyInfos);
     }
 
     @Test
     public void searchPropertyInfoTest(){
         PropertyInfo b = propertyInfoDao.searchPropertyInfo(a.getId());
-        logger.info("Searching for: "+a.getId()+" , Searching result returned: "+ b.getId());
+        Assert.assertEquals(b.getEmail(),a.getEmail());
     }
 
     @Test
-    public void addPropertyInfoTest(){
+    public void addAndDeletePropertyInfoTest(){
         List<PropertyInfo> propertyInfos = propertyInfoDao.getPropertyInfo();
         int a=propertyInfos.size();
         b = new PropertyInfo();
         b.setId(9999);
-
         b.setEmail("abb@abc.com");
         b.setOfficeHours("closed");
         b.setPhoneNumber("123123124");
         b.setAddress("Abcd st");
+        d = new Apartment();
+        d.setId(9999);
+        d.setLowestPrice("$2000");
+        d.setName("ABCDEFG Apartment");
+        d.setSmallestSize("studio");
+        d.setPhoto("No Photo Available");
+        apartmentDao.addApartment(d);
+        b.setApartment(d);
         propertyInfoDao.addPropertyInfo(b);
         propertyInfos = propertyInfoDao.getPropertyInfo();
         int b=propertyInfos.size();
-        logger.info("size before adding "+a+" , size after adding "+b);
+        Assert.assertNotEquals(a,b);
         propertyInfoDao.deletePropertyInfo(9999);
+        apartmentDao.deleteApartment(9999);
         propertyInfos = propertyInfoDao.getPropertyInfo();
-        logger.info("size before deleting "+b+" , size after deleting "+ propertyInfos.size() );
-    }
-
-    @Test
-    public void deletePropertyInfoTest(){
-        List<PropertyInfo> propertyInfos = propertyInfoDao.getPropertyInfo();
-        int a=propertyInfos.size();
-        b = new PropertyInfo();
-        b.setId(9999);
-
-
-
-        b.setEmail("abb@abc.com");
-
-        b.setOfficeHours("closed");
-        b.setPhoneNumber("123123124");
-        b.setAddress("Abcd st");
-        propertyInfoDao.addPropertyInfo(b);
-        propertyInfos = propertyInfoDao.getPropertyInfo();
-        int b=propertyInfos.size();
-        logger.info("size before adding "+a+" , size after adding "+b);
-        propertyInfoDao.deletePropertyInfo(9999);
-        propertyInfos = propertyInfoDao.getPropertyInfo();
-        logger.info("size before deleting "+b+" , size after deleting "+ propertyInfos.size() );
+        b= propertyInfos.size();
+        Assert.assertEquals(a,b);
     }
 
     @Test
@@ -124,7 +107,7 @@ public class PropertyInfoDaoTest {
         a.setEmail("changed!!!!");
         propertyInfoDao.updatePropertyInfo(a);
         PropertyInfo d = propertyInfoDao.searchPropertyInfo(9998);
-        logger.info("name before update: best , name after update: "+d.getEmail());
+        Assert.assertEquals("changed!!!!",d.getEmail());
     }
 
 }

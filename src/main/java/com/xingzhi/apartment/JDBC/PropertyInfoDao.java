@@ -11,9 +11,9 @@ import java.util.List;
 public class PropertyInfoDao {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     //Step1:database information
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/apartment_db";
-    private static final String USER="admin";
-    private static final String PASS="Training123!";
+    private static final String DB_URL = System.getProperty("database.url");;
+    private static final String USER=System.getProperty("database.user");;
+    private static final String PASS=System.getProperty("database.password");;
 
     //get all infos
     public List<PropertyInfo> getPropertyInfo() {
@@ -74,13 +74,14 @@ public class PropertyInfoDao {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //step 3:execute a query
-            String sql = "insert into propertyInfo (id,address,phone_number,email,office_hours) values(?,?,?,?,?)";
+            String sql = "insert into propertyInfo (id,address,phone_number,email,office_hours,apartment_id) values(?,?,?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, propertyInfo.getId());
             stmt.setString(2, propertyInfo.getAddress());
             stmt.setString(3, propertyInfo.getPhoneNumber());
             stmt.setString(4, propertyInfo.getEmail());
             stmt.setString(5, propertyInfo.getOfficeHours());
+            stmt.setInt(6, propertyInfo.getApartment().getId());
             stmt.execute();
         } catch (Exception e) {
             logger.error(e.getMessage());

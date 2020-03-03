@@ -11,9 +11,9 @@ import java.util.List;
 public class ApartmentDao {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     //Step1:database information
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/apartment_db";
-    private static final String USER="admin";
-    private static final String PASS="Training123!";
+    private static final String DB_URL = System.getProperty("database.url");;
+    private static final String USER=System.getProperty("database.user");;
+    private static final String PASS=System.getProperty("database.password");;
 
     //get all infos
     public List<Apartment> getApartment() {
@@ -181,7 +181,6 @@ public class ApartmentDao {
                 String lowestPrice = rs.getString("lowest_price");
                 String smallestSize = rs.getString("smallest_size");
                 String photo = rs.getString("photo");
-                int propertyInfoId = rs.getInt("property_info_id");
                 apartment.setId(id);
                 apartment.setLowestPrice(lowestPrice);
                 apartment.setName(name);

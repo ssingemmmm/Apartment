@@ -3,6 +3,7 @@ package com.xingzhi.apartment.JDBC;
 import com.xingzhi.apartment.JDBC.ApartmentDao;
 import com.xingzhi.apartment.model.Apartment;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ public class ApartmentDaoTest {
     private Apartment a;
     private Apartment b;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private String loggerInfo = System.getenv("logging.level.");
    /* @BeforeClass
     public void classSetup(){
 
@@ -47,19 +47,17 @@ public class ApartmentDaoTest {
     @Test
     public void getApartmentTest(){
         List<Apartment> apartments = apartmentDao.getApartment();
-        for(int i=0;i<apartments.size();i++) {
-            logger.info(apartments.get(i).getName());
-        }
+        Assert.assertNotNull(apartments);
     }
 
     @Test
     public void searchApartmentTest(){
         Apartment b = apartmentDao.searchApartment(a.getId());
-        logger.info("Searching for: "+a.getName()+" , Searching result returned: "+ b.getName());
+        Assert.assertNotNull(b);
     }
 
     @Test
-    public void addApartmentTest(){
+    public void addAndDeleteApartmentTest(){
         List<Apartment> apartments = apartmentDao.getApartment();
         int a=apartments.size();
         b = new Apartment();
@@ -72,10 +70,11 @@ public class ApartmentDaoTest {
         apartmentDao.addApartment(b);
         apartments = apartmentDao.getApartment();
         int b=apartments.size();
-        logger.info("size before adding "+a+" , size after adding "+b);
+        Assert.assertEquals(a+1,b);
         apartmentDao.deleteApartment(9999);
         apartments = apartmentDao.getApartment();
-        logger.info("size before deleting "+b+" , size after deleting "+ apartments.size() );
+        b=apartments.size();
+        Assert.assertEquals(a,b);
     }
 
     @Test
@@ -83,9 +82,6 @@ public class ApartmentDaoTest {
         a.setName("changed!!!!");
         apartmentDao.updateApartment(a);
         Apartment d = apartmentDao.searchApartment(9998);
-        logger.info("name before update: abc , name after update: "+d.getName());
-
+        Assert.assertEquals(a.getName(),d.getName());
     }
-
-
 }
