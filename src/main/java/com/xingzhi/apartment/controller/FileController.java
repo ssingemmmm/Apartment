@@ -24,9 +24,7 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping(value = {"/files"})
 public class FileController {
-    /* Inject value from vm options */
-    @Value("${aws.queue.name}")
-    private String queueName;
+    private String queueName="apartment_xingzhi";
     private String fileDownloadDir="/Users/apple/Desktop";
 
     private Logger logger;
