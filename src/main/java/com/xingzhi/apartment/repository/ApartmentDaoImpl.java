@@ -54,7 +54,6 @@ public class ApartmentDaoImpl implements ApartmentDao{
             transaction = session.beginTransaction();
             updatedCount = query.executeUpdate();
             transaction.commit();
-            updatedCount++;
         }
         catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -81,7 +80,7 @@ public class ApartmentDaoImpl implements ApartmentDao{
         return updatedCount;
     }
 
-    @Cacheable(cacheNames = "apartments")
+
     public List<Apartment> getApartments() {
         String hql = "FROM Apartment";
 
@@ -92,7 +91,6 @@ public class ApartmentDaoImpl implements ApartmentDao{
     }
 
     @Override
-    @Cacheable(cacheNames = "apartments")
     public Apartment getApartmentByName(String name) {
         String hql = "FROM Apartment as apt where lower(apt.name) = :name";
 

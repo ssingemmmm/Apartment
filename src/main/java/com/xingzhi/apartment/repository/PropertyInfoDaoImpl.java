@@ -62,7 +62,7 @@ public class PropertyInfoDaoImpl implements PropertyInfoDao {
     }
 
     @Override
-    @Cacheable(cacheNames = "propertyInfos")
+    //@Cacheable(cacheNames = "propertyInfos")
     public List<PropertyInfo> getPropertyInfos() {
         String hql = "FROM PropertyInfo";
 

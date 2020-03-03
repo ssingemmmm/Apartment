@@ -3,6 +3,7 @@ package com.xingzhi.apartment.service;
 
 import com.xingzhi.apartment.init.AppInitializer;
 import com.xingzhi.apartment.model.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,11 @@ public class AuthServiceTest {
         user.setPassword("c4ca4238a0b923820dcc509a6f75849b");
         user.setName("abc");
         userService.save(user);
+    }
+
+    @After
+    public void tearDown(){
+        userService.deleteUserById(userService.getUserByEmail(user.getEmail()).getId());
     }
 
     @Test

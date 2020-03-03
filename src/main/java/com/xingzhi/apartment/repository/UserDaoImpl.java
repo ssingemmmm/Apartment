@@ -1,5 +1,6 @@
 package com.xingzhi.apartment.repository;
 
+import com.xingzhi.apartment.model.Apartment;
 import com.xingzhi.apartment.model.User;
 import com.xingzhi.apartment.util.HibernateUtil;
 import org.hibernate.Session;
@@ -40,6 +41,27 @@ public class UserDaoImpl implements UserDao{
 
         logger.debug(msg);
         return isSuccess;
+    }
+
+    @Override
+    public boolean deleteUserById(Integer id){
+        String hql = "DELETE User where id = :id";
+        int deletedCount = 0;
+        Transaction transaction = null;
+        try {
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            Query<Apartment> query = session.createQuery(hql);
+            query.setParameter("id", id);
+            deletedCount = query.executeUpdate();
+            transaction.commit();
+        }
+        catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+//            logger.error(e.getMessage());
+        }
+        logger.debug(String.format("The roomInfo %d was deleted", id));
+        return deletedCount >= 1 ? true : false;
     }
 
     @Override

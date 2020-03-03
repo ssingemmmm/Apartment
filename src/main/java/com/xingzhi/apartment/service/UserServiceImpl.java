@@ -33,4 +33,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByCredentials(String email, String password) {
         return userDao.getUserByCredentials(email, password);
     }
+
+    @Override
+    public boolean deleteUserById(Integer id) {
+        return userDao.deleteUserById(id);
+    }
 }

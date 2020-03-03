@@ -85,7 +85,7 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    @Cacheable(cacheNames = "roomInfos")
+    //@Cacheable(cacheNames = "roomInfos")
     public List<RoomInfo> getRoomInfos() {
         String hql = "FROM RoomInfo ";
 
@@ -96,7 +96,7 @@ public class RoomInfoDaoImpl implements RoomInfoDao {
     }
 
     @Override
-    @Cacheable(cacheNames = "roomInfos")
+    //@Cacheable(cacheNames = "roomInfos")
     public List<RoomInfo> getRoomInfoByApartmentName(String name) {
         String hql = "FROM RoomInfo as rm where lower(rm.apartment.name) = :name";
 
