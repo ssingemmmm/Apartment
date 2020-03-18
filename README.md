@@ -53,11 +53,11 @@ Build a docker container of postgre from postgresdocker image
     -Ddatabase.dialect=org.hibernate.dialect.PostgreSQL9Dialect
     -Ddatabase.url=jdbc:postgresql://${database_url}:${port}/${database_name}
 ```
-## Database Migration
+#### Database Migration
 >Use `Flyway` as a data migration and database version control tool .
 >
  ```sh
-    mvn clean compile flyway:migrate -Ddatabase.url=...
+    mvn clean compile flyway:migrate -Ddb_url=jdbc:postgresql://${db_url}:5432/${db_name} -Ddb_user=${db_user} -Ddb_password=${db_password} -Ddb_driver=org.postgresql.Driver
 ```
 #### Redis
 >Use `Redis` to enable caching for better controller performance.
@@ -75,10 +75,7 @@ Redis commandline:
     redis-cli FLUSHDB
     redis-cli info stats | grep 'keyspace_*'
 ```
-```bash
-mvn clean compile flyway:migrate -Ddb_url=jdbc:postgresql://${db_url}:5432/${db_name} -Ddb_user=${db_user} -Ddb_password=${db_password} -Ddb_driver=org.postgresql.Driver
-```
-
+####Unit Test in container
 ```bash
 mvn test -Ddatabase.driver=org.postgresql.Driver -Ddatabase.dialect=org.hibernate.dialect.PostgreSQL9Dialect -Ddatabase.url=jdbc:postgresql://${db_url}:5432/${db_name} -Ddatabase.user=${db_user} -Ddatabase.password=${db_password} -Dlogging.level.org.springframework=INFO -Dlogging.level.com.xingzhi=TRACE -Dserver.port=8080 -Dsecret.key=66545321 -Daws.queue.name=''
 ```
